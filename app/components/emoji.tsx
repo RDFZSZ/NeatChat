@@ -6,38 +6,38 @@ import EmojiPicker, {
 
 import { ModelType } from "../store";
 
-import ClaudeIcon from "../icons/claude-color.svg";
-import DallEIcon from "../icons/dalle-color.svg";
-import GeminiIcon from "../icons/gemini-color.svg";
-import DouBaoIcon from "../icons/doubao-color.svg";
-import HunYuanIcon from "../icons/hunyuan-color.svg";
-import MetaIcon from "../icons/meta-color.svg";
-import CohereIcon from "../icons/cohere-color.svg";
-import DeepseekIcon from "../icons/deepseek-color.svg";
-import MoonShotIcon from "../icons/moonshot.svg";
-import GlmIcon from "../icons/qingyan-color.svg";
-import GrokIcon from "../icons/grok.svg";
-import Gpt35Icon from "../icons/openai-3.5.svg";
-import QwenIcon from "../icons/qwen-color.svg";
-import OpenAIIcon from "../icons/openai.svg";
-import WenXinIcon from "../icons/wenxin-color.svg";
-import NeatIcon from "../icons/neat.svg";
-import MistralIcon from "../icons/mistral-color.svg";
-import YiIcon from "../icons/yi-color.svg";
-import SenseNovaIcon from "../icons/sensenova-color.svg";
-import SparkIcon from "../icons/spark-color.svg";
-import MiniMaxIcon from "../icons/minimax-color.svg";
-import HaiLuoIcon from "../icons/hailuo-color.svg";
-import GemmaIcon from "../icons/gemma-color.svg";
-import StepFunIcon from "../icons/stepfun-color.svg";
-import OllamaIcon from "../icons/ollama.svg";
-import ComfyUIIcon from "../icons/comfyui-color.svg";
-import VolcEngineIcon from "../icons/volcengine-color.svg";
-import VertexAIIcon from "../icons/vertexai-color.svg";
-import SiliconCloudIcon from "../icons/siliconcloud-color.svg";
-import PerplexityIcon from "../icons/perplexity-color.svg";
-import StabilityIcon from "../icons/stability-color.svg";
-import FluxIcon from "../icons/flux.svg";
+import ClaudeIcon from "../icons/claude-color.svg?react";
+import DallEIcon from "../icons/dalle-color.svg?react";
+import GeminiIcon from "../icons/gemini-color.svg?react";
+import DouBaoIcon from "../icons/doubao-color.svg?react";
+import HunYuanIcon from "../icons/hunyuan-color.svg?react";
+import MetaIcon from "../icons/meta-color.svg?react";
+import CohereIcon from "../icons/cohere-color.svg?react";
+import DeepseekIcon from "../icons/deepseek-color.svg?react";
+import MoonShotIcon from "../icons/moonshot.svg?react";
+import GlmIcon from "../icons/qingyan-color.svg?react";
+import GrokIcon from "../icons/grok.svg?react";
+import Gpt35Icon from "../icons/openai-3.5.svg?react";
+import QwenIcon from "../icons/qwen-color.svg?react";
+import OpenAIIcon from "../icons/openai.svg?react";
+import WenXinIcon from "../icons/wenxin-color.svg?react";
+import NeatIcon from "../icons/neat.svg?react";
+import MistralIcon from "../icons/mistral-color.svg?react";
+import YiIcon from "../icons/yi-color.svg?react";
+import SenseNovaIcon from "../icons/sensenova-color.svg?react";
+import SparkIcon from "../icons/spark-color.svg?react";
+import MiniMaxIcon from "../icons/minimax-color.svg?react";
+import HaiLuoIcon from "../icons/hailuo-color.svg?react";
+import GemmaIcon from "../icons/gemma-color.svg?react";
+import StepFunIcon from "../icons/stepfun-color.svg?react";
+import OllamaIcon from "../icons/ollama.svg?react";
+import ComfyUIIcon from "../icons/comfyui-color.svg?react";
+import VolcEngineIcon from "../icons/volcengine-color.svg?react";
+import VertexAIIcon from "../icons/vertexai-color.svg?react";
+import SiliconCloudIcon from "../icons/siliconcloud-color.svg?react";
+import PerplexityIcon from "../icons/perplexity-color.svg?react";
+import StabilityIcon from "../icons/stability-color.svg?react";
+import FluxIcon from "../icons/flux.svg?react";
 
 import "../styles/model-avatar.scss";
 
@@ -192,7 +192,7 @@ export function Avatar(props: {
           if (provider) {
             if (provider.includes("anthropic")) {
               return (
-                <ClaudeIcon className="user-avatar model-avatar" alt="Claude" />
+                <ClaudeIcon className="user-avatar model-avatar"  />
               );
             }
 
@@ -202,30 +202,30 @@ export function Avatar(props: {
                 return (
                   <Gpt35Icon
                     className="user-avatar model-avatar"
-                    alt="GPT-3.5"
+                    
                   />
                 );
               }
               return (
-                <OpenAIIcon className="user-avatar model-avatar" alt="OpenAI" />
+                <OpenAIIcon className="user-avatar model-avatar"  />
               );
             }
 
             if (provider.includes("google")) {
               return (
-                <GeminiIcon className="user-avatar model-avatar" alt="Gemini" />
+                <GeminiIcon className="user-avatar model-avatar"  />
               );
             }
 
             if (provider.includes("bytedance")) {
               return (
-                <DouBaoIcon className="user-avatar model-avatar" alt="DouBao" />
+                <DouBaoIcon className="user-avatar model-avatar"  />
               );
             }
 
             if (provider.includes("baidu")) {
               return (
-                <WenXinIcon className="user-avatar model-avatar" alt="WenXin" />
+                <WenXinIcon className="user-avatar model-avatar"  />
               );
             }
 
@@ -233,20 +233,20 @@ export function Avatar(props: {
               return (
                 <HunYuanIcon
                   className="user-avatar model-avatar"
-                  alt="HunYuan"
+                  
                 />
               );
             }
 
             if (provider.includes("meta")) {
               return (
-                <MetaIcon className="user-avatar model-avatar" alt="Meta" />
+                <MetaIcon className="user-avatar model-avatar"  />
               );
             }
 
             if (provider.includes("cohere")) {
               return (
-                <CohereIcon className="user-avatar model-avatar" alt="Cohere" />
+                <CohereIcon className="user-avatar model-avatar"  />
               );
             }
 
@@ -258,24 +258,24 @@ export function Avatar(props: {
               return (
                 <MoonShotIcon
                   className="user-avatar model-avatar"
-                  alt="MoonShot"
+                  
                 />
               );
             }
 
             if (provider.includes("zhipu")) {
-              return <GlmIcon className="user-avatar model-avatar" alt="GLM" />;
+              return <GlmIcon className="user-avatar model-avatar"  />;
             }
 
             if (provider.includes("xai")) {
               return (
-                <GrokIcon className="user-avatar model-avatar" alt="Grok" />
+                <GrokIcon className="user-avatar model-avatar"  />
               );
             }
 
             if (provider.includes("aliyun")) {
               return (
-                <QwenIcon className="user-avatar model-avatar" alt="Qwen" />
+                <QwenIcon className="user-avatar model-avatar"  />
               );
             }
           }
@@ -287,34 +287,34 @@ export function Avatar(props: {
           switch (category) {
             case "Claude":
               return (
-                <ClaudeIcon className="user-avatar model-avatar" alt="Claude" />
+                <ClaudeIcon className="user-avatar model-avatar"  />
               );
             case "DALL-E":
               return (
-                <DallEIcon className="user-avatar model-avatar" alt="DALL-E" />
+                <DallEIcon className="user-avatar model-avatar"  />
               );
             case "WenXin":
               return (
-                <WenXinIcon className="user-avatar model-avatar" alt="WenXin" />
+                <WenXinIcon className="user-avatar model-avatar"  />
               );
             case "DouBao":
               return (
-                <DouBaoIcon className="user-avatar model-avatar" alt="DouBao" />
+                <DouBaoIcon className="user-avatar model-avatar"  />
               );
             case "HunYuan":
               return (
                 <HunYuanIcon
                   className="user-avatar model-avatar"
-                  alt="HunYuan"
+                  
                 />
               );
             case "Gemini":
               return (
-                <GeminiIcon className="user-avatar model-avatar" alt="Gemini" />
+                <GeminiIcon className="user-avatar model-avatar"  />
               );
             case "Llama":
               return (
-                <MetaIcon className="user-avatar model-avatar" alt="Meta" />
+                <MetaIcon className="user-avatar model-avatar"  />
               );
             case "ChatGPT":
               // 特殊处理GPT-3.5
@@ -322,16 +322,16 @@ export function Avatar(props: {
                 return (
                   <Gpt35Icon
                     className="user-avatar model-avatar"
-                    alt="GPT-3.5"
+                    
                   />
                 );
               }
               return (
-                <OpenAIIcon className="user-avatar model-avatar" alt="OpenAI" />
+                <OpenAIIcon className="user-avatar model-avatar"  />
               );
             case "Cohere":
               return (
-                <CohereIcon className="user-avatar model-avatar" alt="Cohere" />
+                <CohereIcon className="user-avatar model-avatar"  />
               );
             case "DeepSeek":
               return <DeepseekIcon className="user-avatar model-avatar" />;
@@ -339,114 +339,114 @@ export function Avatar(props: {
               return (
                 <MoonShotIcon
                   className="user-avatar model-avatar"
-                  alt="MoonShot"
+                  
                 />
               );
             case "GLM":
-              return <GlmIcon className="user-avatar model-avatar" alt="GLM" />;
+              return <GlmIcon className="user-avatar model-avatar"  />;
             case "Grok":
               return (
-                <GrokIcon className="user-avatar model-avatar" alt="Grok" />
+                <GrokIcon className="user-avatar model-avatar"  />
               );
             case "Qwen":
               return (
-                <QwenIcon className="user-avatar model-avatar" alt="Qwen" />
+                <QwenIcon className="user-avatar model-avatar"  />
               );
             case "Mistral":
               return (
                 <MistralIcon
                   className="user-avatar model-avatar"
-                  alt="Mistral"
+                  
                 />
               );
             case "Yi":
-              return <YiIcon className="user-avatar model-avatar" alt="Yi" />;
+              return <YiIcon className="user-avatar model-avatar"  />;
             case "SenseNova":
               return (
                 <SenseNovaIcon
                   className="user-avatar model-avatar"
-                  alt="SenseNova"
+                  
                 />
               );
             case "Spark":
               return (
-                <SparkIcon className="user-avatar model-avatar" alt="Spark" />
+                <SparkIcon className="user-avatar model-avatar"  />
               );
             case "MiniMax":
               return (
                 <MiniMaxIcon
                   className="user-avatar model-avatar"
-                  alt="MiniMax"
+                  
                 />
               );
             case "HaiLuo":
               return (
-                <HaiLuoIcon className="user-avatar model-avatar" alt="HaiLuo" />
+                <HaiLuoIcon className="user-avatar model-avatar"  />
               );
             case "Gemma":
               return (
-                <GemmaIcon className="user-avatar model-avatar" alt="Gemma" />
+                <GemmaIcon className="user-avatar model-avatar"  />
               );
             case "StepFun":
               return (
                 <StepFunIcon
                   className="user-avatar model-avatar"
-                  alt="StepFun"
+                  
                 />
               );
             case "Ollama":
               return (
-                <OllamaIcon className="user-avatar model-avatar" alt="Ollama" />
+                <OllamaIcon className="user-avatar model-avatar"  />
               );
             case "ComfyUI":
               return (
                 <ComfyUIIcon
                   className="user-avatar model-avatar"
-                  alt="ComfyUI"
+                  
                 />
               );
             case "VolcEngine":
               return (
                 <VolcEngineIcon
                   className="user-avatar model-avatar"
-                  alt="VolcEngine"
+                  
                 />
               );
             case "VertexAI":
               return (
                 <VertexAIIcon
                   className="user-avatar model-avatar"
-                  alt="VertexAI"
+                  
                 />
               );
             case "SiliconCloud":
               return (
                 <SiliconCloudIcon
                   className="user-avatar model-avatar"
-                  alt="SiliconCloud"
+                  
                 />
               );
             case "Perplexity":
               return (
                 <PerplexityIcon
                   className="user-avatar model-avatar"
-                  alt="Perplexity"
+                  
                 />
               );
             case "Stability":
               return (
                 <StabilityIcon
                   className="user-avatar model-avatar"
-                  alt="Stability"
+                  
                 />
               );
             case "Flux":
               return (
-                <FluxIcon className="user-avatar model-avatar" alt="Flux" />
+                <FluxIcon className="user-avatar model-avatar"  />
               );
             default:
               return (
-                <NeatIcon className="user-avatar model-avatar" alt="Logo" />
+                <NeatIcon className="user-avatar model-avatar"  />
               );
           }
         })()}
@@ -480,37 +480,37 @@ export function getFixedCategoryAvatar(category: string) {
         switch (category) {
           case "Claude":
             return (
-              <ClaudeIcon className="user-avatar model-avatar" alt="Claude" />
+              <ClaudeIcon className="user-avatar model-avatar"  />
             );
           case "DALL-E":
             return (
-              <DallEIcon className="user-avatar model-avatar" alt="DALL-E" />
+              <DallEIcon className="user-avatar model-avatar"  />
             );
           case "WenXin":
             return (
-              <WenXinIcon className="user-avatar model-avatar" alt="WenXin" />
+              <WenXinIcon className="user-avatar model-avatar"  />
             );
           case "DouBao":
             return (
-              <DouBaoIcon className="user-avatar model-avatar" alt="DouBao" />
+              <DouBaoIcon className="user-avatar model-avatar"  />
             );
           case "HunYuan":
             return (
-              <HunYuanIcon className="user-avatar model-avatar" alt="HunYuan" />
+              <HunYuanIcon className="user-avatar model-avatar"  />
             );
           case "Gemini":
             return (
-              <GeminiIcon className="user-avatar model-avatar" alt="Gemini" />
+              <GeminiIcon className="user-avatar model-avatar"  />
             );
           case "Llama":
-            return <MetaIcon className="user-avatar model-avatar" alt="Meta" />;
+            return <MetaIcon className="user-avatar model-avatar"  />;
           case "ChatGPT":
             return (
-              <OpenAIIcon className="user-avatar model-avatar" alt="OpenAI" />
+              <OpenAIIcon className="user-avatar model-avatar"  />
             );
           case "Cohere":
             return (
-              <CohereIcon className="user-avatar model-avatar" alt="Cohere" />
+              <CohereIcon className="user-avatar model-avatar"  />
             );
           case "DeepSeek":
             return <DeepseekIcon className="user-avatar model-avatar" />;
@@ -518,95 +518,95 @@ export function getFixedCategoryAvatar(category: string) {
             return (
               <MoonShotIcon
                 className="user-avatar model-avatar"
-                alt="MoonShot"
+                
               />
             );
           case "GLM":
-            return <GlmIcon className="user-avatar model-avatar" alt="GLM" />;
+            return <GlmIcon className="user-avatar model-avatar"  />;
           case "Grok":
-            return <GrokIcon className="user-avatar model-avatar" alt="Grok" />;
+            return <GrokIcon className="user-avatar model-avatar"  />;
           case "Qwen":
-            return <QwenIcon className="user-avatar model-avatar" alt="Qwen" />;
+            return <QwenIcon className="user-avatar model-avatar"  />;
           case "Mistral":
             return (
-              <MistralIcon className="user-avatar model-avatar" alt="Mistral" />
+              <MistralIcon className="user-avatar model-avatar"  />
             );
           case "Yi":
-            return <YiIcon className="user-avatar model-avatar" alt="Yi" />;
+            return <YiIcon className="user-avatar model-avatar"  />;
           case "SenseNova":
             return (
               <SenseNovaIcon
                 className="user-avatar model-avatar"
-                alt="SenseNova"
+                
               />
             );
           case "Spark":
             return (
-              <SparkIcon className="user-avatar model-avatar" alt="Spark" />
+              <SparkIcon className="user-avatar model-avatar"  />
             );
           case "MiniMax":
             return (
-              <MiniMaxIcon className="user-avatar model-avatar" alt="MiniMax" />
+              <MiniMaxIcon className="user-avatar model-avatar"  />
             );
           case "HaiLuo":
             return (
-              <HaiLuoIcon className="user-avatar model-avatar" alt="HaiLuo" />
+              <HaiLuoIcon className="user-avatar model-avatar"  />
             );
           case "Gemma":
             return (
-              <GemmaIcon className="user-avatar model-avatar" alt="Gemma" />
+              <GemmaIcon className="user-avatar model-avatar"  />
             );
           case "StepFun":
             return (
-              <StepFunIcon className="user-avatar model-avatar" alt="StepFun" />
+              <StepFunIcon className="user-avatar model-avatar"  />
             );
           case "Ollama":
             return (
-              <OllamaIcon className="user-avatar model-avatar" alt="Ollama" />
+              <OllamaIcon className="user-avatar model-avatar"  />
             );
           case "ComfyUI":
             return (
-              <ComfyUIIcon className="user-avatar model-avatar" alt="ComfyUI" />
+              <ComfyUIIcon className="user-avatar model-avatar"  />
             );
           case "VolcEngine":
             return (
               <VolcEngineIcon
                 className="user-avatar model-avatar"
-                alt="VolcEngine"
+                
               />
             );
           case "VertexAI":
             return (
               <VertexAIIcon
                 className="user-avatar model-avatar"
-                alt="VertexAI"
+                
               />
             );
           case "SiliconCloud":
             return (
               <SiliconCloudIcon
                 className="user-avatar model-avatar"
-                alt="SiliconCloud"
+                
               />
             );
           case "Perplexity":
             return (
               <PerplexityIcon
                 className="user-avatar model-avatar"
-                alt="Perplexity"
+                
               />
             );
           case "Stability":
             return (
               <StabilityIcon
                 className="user-avatar model-avatar"
-                alt="Stability"
+                
               />
             );
           case "Flux":
-            return <FluxIcon className="user-avatar model-avatar" alt="Flux" />;
+            return <FluxIcon className="user-avatar model-avatar"  />;
           default:
-            return <NeatIcon className="user-avatar model-avatar" alt="Logo" />;
+            return <NeatIcon className="user-avatar model-avatar"  />;
         }
       })()}
     </div>

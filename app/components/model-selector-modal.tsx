@@ -1,14 +1,14 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { Modal, List, ListItem, showToast } from "./ui-lib";
 import { IconButton } from "./button";
-import LoadingIcon from "../icons/three-dots.svg";
-import ConfirmIcon from "../icons/confirm.svg";
-import CancelIcon from "../icons/cancel.svg";
+import LoadingIcon from "../icons/three-dots.svg?react";
+import ConfirmIcon from "../icons/confirm.svg?react";
+import CancelIcon from "../icons/cancel.svg?react";
 import Locale from "../locales";
 import { useAccessStore } from "../store";
-import CloseIcon from "../icons/close.svg";
-import EditIcon from "../icons/edit.svg";
-import ResetIcon from "../icons/reload.svg";
+import CloseIcon from "../icons/close.svg?react";
+import EditIcon from "../icons/edit.svg?react";
+import ResetIcon from "../icons/reload.svg?react";
 import {
   getModelCategory,
   getFixedCategoryAvatar,

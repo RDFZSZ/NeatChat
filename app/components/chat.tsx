@@ -1,44 +1,44 @@
 import { useDebouncedCallback } from "use-debounce";
 import React, { useState, useRef, useEffect, useMemo, Fragment } from "react";
 
-import SendWhiteIcon from "../icons/send-white.svg";
-import BrainIcon from "../icons/brain.svg";
-import RenameIcon from "../icons/rename.svg";
-import ExportIcon from "../icons/share.svg";
-import ReturnIcon from "../icons/return.svg";
-import CopyIcon from "../icons/copy.svg";
-import SpeakIcon from "../icons/speak.svg";
-import SpeakStopIcon from "../icons/speak-stop.svg";
-import LoadingIcon from "../icons/three-dots.svg";
-import LoadingButtonIcon from "../icons/loading.svg";
-import PromptIcon from "../icons/prompt.svg";
-import MaxIcon from "../icons/max.svg";
-import MinIcon from "../icons/min.svg";
-import ResetIcon from "../icons/reload.svg";
-import BreakIcon from "../icons/break.svg";
-import SettingsIcon from "../icons/chat-settings.svg";
-import DeleteIcon from "../icons/clear.svg";
-import PinIcon from "../icons/pin.svg";
-import EditIcon from "../icons/rename.svg";
-import ConfirmIcon from "../icons/confirm.svg";
-import CancelIcon from "../icons/cancel.svg";
-import FileIcon from "../icons/file.svg";
-import AttachmentIcon from "../icons/attachment.svg";
+import SendWhiteIcon from "../icons/send-white.svg?react";
+import BrainIcon from "../icons/brain.svg?react";
+import RenameIcon from "../icons/rename.svg?react";
+import ExportIcon from "../icons/share.svg?react";
+import ReturnIcon from "../icons/return.svg?react";
+import CopyIcon from "../icons/copy.svg?react";
+import SpeakIcon from "../icons/speak.svg?react";
+import SpeakStopIcon from "../icons/speak-stop.svg?react";
+import LoadingIcon from "../icons/three-dots.svg?react";
+import LoadingButtonIcon from "../icons/loading.svg?react";
+import PromptIcon from "../icons/prompt.svg?react";
+import MaxIcon from "../icons/max.svg?react";
+import MinIcon from "../icons/min.svg?react";
+import ResetIcon from "../icons/reload.svg?react";
+import BreakIcon from "../icons/break.svg?react";
+import SettingsIcon from "../icons/chat-settings.svg?react";
+import DeleteIcon from "../icons/clear.svg?react";
+import PinIcon from "../icons/pin.svg?react";
+import EditIcon from "../icons/rename.svg?react";
+import ConfirmIcon from "../icons/confirm.svg?react";
+import CancelIcon from "../icons/cancel.svg?react";
+import FileIcon from "../icons/file.svg?react";
+import AttachmentIcon from "../icons/attachment.svg?react";
 
-import LightIcon from "../icons/light.svg";
-import DarkIcon from "../icons/dark.svg";
-import AutoIcon from "../icons/auto.svg";
-import BottomIcon from "../icons/bottom.svg";
-import StopIcon from "../icons/pause.svg";
-import RobotIcon from "../icons/robot.svg";
-import SizeIcon from "../icons/size.svg";
-import QualityIcon from "../icons/hd.svg";
-import StyleIcon from "../icons/palette.svg";
-import PluginIcon from "../icons/plugin.svg";
-import ShortcutkeyIcon from "../icons/shortcutkey.svg";
-import ReloadIcon from "../icons/reload.svg";
-import HeadphoneIcon from "../icons/headphone.svg";
-import McpToolIcon from "../icons/tool.svg";
+import LightIcon from "../icons/light.svg?react";
+import DarkIcon from "../icons/dark.svg?react";
+import AutoIcon from "../icons/auto.svg?react";
+import BottomIcon from "../icons/bottom.svg?react";
+import StopIcon from "../icons/pause.svg?react";
+import RobotIcon from "../icons/robot.svg?react";
+import SizeIcon from "../icons/size.svg?react";
+import QualityIcon from "../icons/hd.svg?react";
+import StyleIcon from "../icons/palette.svg?react";
+import PluginIcon from "../icons/plugin.svg?react";
+import ShortcutkeyIcon from "../icons/shortcutkey.svg?react";
+import ReloadIcon from "../icons/reload.svg?react";
+import HeadphoneIcon from "../icons/headphone.svg?react";
+import McpToolIcon from "../icons/tool.svg?react";
 import {
   ChatMessage,
   SubmitKey,
@@ -68,8 +68,6 @@ import {
 
 import { uploadImage as uploadImageRemote } from "@/app/utils/chat";
 
-import dynamic from "next/dynamic";
-import Image from "next/image";
 
 import { ChatControllerPool } from "../client/controller";
 import { DalleSize, DalleQuality, DalleStyle } from "../typing";
@@ -131,9 +129,9 @@ const localStorage = safeLocalStorage();
 
 const ttsPlayer = createTTSPlayer();
 
-const Markdown = dynamic(async () => (await import("./markdown")).Markdown, {
-  loading: () => <LoadingIcon />,
-});
+const Markdown = React.lazy(() =>
+  import("./markdown").then((module) => ({ default: module.Markdown })),
+);
 
 export function SessionConfigModel(props: { onClose: () => void }) {
   const chatStore = useChatStore();
@@ -2138,23 +2136,25 @@ function ChatPanel() {
                       </div>
 
                       <div className={styles["chat-message-item"]}>
-                        <Markdown
-                          key={message.streaming ? "loading" : "done"}
-                          content={getMessageTextContent(message)}
-                          loading={
-                            (message.preview || message.streaming) &&
-                            message.content.length === 0 &&
-                            !isUser
-                          }
-                          fontSize={fontSize}
-                          fontFamily={fontFamily}
-                          parentRef={scrollRef}
-                          defaultShow={i >= messages.length - 6}
-                          isUser={isUser}
-                          messageId={message.id}
-                        />
+                        <React.Suspense fallback={<LoadingIcon />}>
+                          <Markdown
+                            key={message.streaming ? "loading" : "done"}
+                            content={getMessageTextContent(message)}
+                            loading={
+                              (message.preview || message.streaming) &&
+                              message.content.length === 0 &&
+                              !isUser
+                            }
+                            fontSize={fontSize}
+                            fontFamily={fontFamily}
+                            parentRef={scrollRef}
+                            defaultShow={i >= messages.length - 6}
+                            isUser={isUser}
+                            messageId={message.id}
+                          />
+                        </React.Suspense>
                         {getMessageImages(message).length == 1 && (
-                          <Image
+                          <img
                             className={styles["chat-message-item-image"]}
                             src={getMessageImages(message)[0]}
                             alt=""
@@ -2178,7 +2178,7 @@ function ChatPanel() {
                           >
                             {getMessageImages(message).map((image, index) => {
                               return (
-                                <Image
+                                <img
                                   className={
                                     styles["chat-message-item-image-multi"]
                                   }

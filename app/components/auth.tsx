@@ -5,10 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { Path } from "../constant";
 import { useAccessStore } from "../store";
 import Locale from "../locales";
-import NeatIcon from "../icons/neat.svg";
+import NeatIcon from "../icons/neat.svg?react";
 import { getClientConfig } from "../config/client";
 import { PasswordInput } from "./ui-lib";
-import LeftIcon from "@/app/icons/left.svg";
+import LeftIcon from "@/app/icons/left.svg?react";
 import clsx from "clsx";
 
 export function AuthPage() {

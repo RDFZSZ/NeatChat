@@ -2,22 +2,22 @@ import { useState, useEffect, useMemo } from "react";
 
 import styles from "./settings.module.scss";
 
-import ResetIcon from "../icons/reload.svg";
-import AddIcon from "../icons/add.svg";
-import CloseIcon from "../icons/close.svg";
-import CopyIcon from "../icons/copy.svg";
-import ClearIcon from "../icons/clear.svg";
-import LoadingIcon from "../icons/three-dots.svg";
-import EditIcon from "../icons/edit.svg";
-import EyeIcon from "../icons/eye.svg";
-import DownloadIcon from "../icons/download.svg";
-import UploadIcon from "../icons/upload.svg";
-import ConfigIcon from "../icons/config.svg";
-import ConfirmIcon from "../icons/confirm.svg";
+import ResetIcon from "../icons/reload.svg?react";
+import AddIcon from "../icons/add.svg?react";
+import CloseIcon from "../icons/close.svg?react";
+import CopyIcon from "../icons/copy.svg?react";
+import ClearIcon from "../icons/clear.svg?react";
+import LoadingIcon from "../icons/three-dots.svg?react";
+import EditIcon from "../icons/edit.svg?react";
+import EyeIcon from "../icons/eye.svg?react";
+import DownloadIcon from "../icons/download.svg?react";
+import UploadIcon from "../icons/upload.svg?react";
+import ConfigIcon from "../icons/config.svg?react";
+import ConfirmIcon from "../icons/confirm.svg?react";
 
-import ConnectionIcon from "../icons/connection.svg";
-import CloudSuccessIcon from "../icons/cloud-success.svg";
-import CloudFailIcon from "../icons/cloud-fail.svg";
+import ConnectionIcon from "../icons/connection.svg?react";
+import CloudSuccessIcon from "../icons/cloud-success.svg?react";
+import CloudFailIcon from "../icons/cloud-fail.svg?react";
 import {
   Input,
   List,
@@ -47,7 +47,7 @@ import Locale, {
   getLang,
 } from "../locales";
 import { copyToClipboard, clientUpdate, semverCompare } from "../utils";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import {
   Anthropic,
   Azure,
@@ -1457,9 +1457,9 @@ export function Settings() {
                   onClick={() => clientUpdate()}
                 />
               ) : (
-                <Link href={updateUrl} target="_blank" className="link">
+                <a href={updateUrl} target="_blank" rel="noopener noreferrer" className="link">
                   {Locale.Settings.Update.GoToUpdate}
-                </Link>
+                </a>
               )
             ) : (
               <IconButton

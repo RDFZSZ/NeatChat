@@ -1,14 +1,14 @@
 import { IconButton } from "@/app/components/button";
-import GithubIcon from "@/app/icons/github.svg";
-import SDIcon from "@/app/icons/sd.svg";
-import ReturnIcon from "@/app/icons/return.svg";
-import HistoryIcon from "@/app/icons/history.svg";
+import GithubIcon from "@/app/icons/github.svg?react";
+import SDIcon from "@/app/icons/sd.svg?react";
+import ReturnIcon from "@/app/icons/return.svg?react";
+import HistoryIcon from "@/app/icons/history.svg?react";
 import Locale from "@/app/locales";
 
 import { Path, REPO_URL } from "@/app/constant";
 
 import { useNavigate } from "react-router-dom";
-import dynamic from "next/dynamic";
+import React, { Suspense } from "react";
 import {
   SideBarContainer,
   SideBarBody,
@@ -23,11 +23,8 @@ import { useSdStore } from "@/app/store/sd";
 import { showToast } from "@/app/components/ui-lib";
 import { useMobileScreen } from "@/app/utils";
 
-const SdPanel = dynamic(
-  async () => (await import("@/app/components/sd")).SdPanel,
-  {
-    loading: () => null,
-  },
+const SdPanel = React.lazy(() =>
+  import("./sd-panel").then((module) => ({ default: module.SdPanel })),
 );
 
 export function SideBar(props: { className?: string }) {
@@ -118,7 +115,9 @@ export function SideBar(props: { className?: string }) {
         ></SideBarHeader>
       )}
       <SideBarBody>
-        <SdPanel />
+        <Suspense fallback={null}>
+          <SdPanel />
+        </Suspense>
       </SideBarBody>
       <SideBarTail
         primaryAction={

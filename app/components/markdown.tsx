@@ -10,7 +10,7 @@ import { useRef, useState, RefObject, useEffect, useMemo } from "react";
 import { copyToClipboard, useWindowSize } from "../utils";
 import mermaid from "mermaid";
 import Locale from "../locales";
-import LoadingIcon from "../icons/three-dots.svg";
+import LoadingIcon from "../icons/three-dots.svg?react";
 import React from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { showImageModal, showToast } from "./ui-lib";

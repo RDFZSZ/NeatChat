@@ -2,9 +2,9 @@ import React, { useRef, useState, useEffect } from "react";
 import styles from "./image-editor.module.scss";
 import { IconButton } from "./button";
 import { Modal } from "./ui-lib";
-import ConfirmIcon from "../icons/confirm.svg";
-import CancelIcon from "../icons/cancel.svg";
-import ReturnIcon from "../icons/return.svg";
+import ConfirmIcon from "../icons/confirm.svg?react";
+import CancelIcon from "../icons/cancel.svg?react";
+import ReturnIcon from "../icons/return.svg?react";
 import Locale from "../locales";
 
 // 添加工具类型枚举

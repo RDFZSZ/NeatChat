@@ -1,5 +1,5 @@
 import React from "react";
-import FileIcon from "../icons/file.svg";
+import FileIcon from "../icons/file.svg?react";
 import { getFileIconClass } from "../utils/file";
 import clsx from "clsx";
 import styles from "./file-attachment.module.scss";

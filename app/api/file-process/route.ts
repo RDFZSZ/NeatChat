@@ -115,56 +115,9 @@ async function readPowerPointFile(arrayBuffer: ArrayBuffer): Promise<string> {
  * @returns 文件内容的Promise
  */
 async function readPdfFile(arrayBuffer: ArrayBuffer): Promise<string> {
-  try {
-    // 动态导入 pdf.js
-    const pdfjsLib = await import("pdfjs-dist");
-
-    // 设置 worker 路径
-    if (!pdfjsLib.GlobalWorkerOptions.workerSrc) {
-      try {
-        const pdfjsWorker = await import("pdfjs-dist/build/pdf.worker.mjs");
-        pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker.default;
-      } catch (workerError) {
-        // 使用一个稳定版本的CDN链接作为后备
-        pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.2.677/pdf.worker.min.js`;
-      }
-    }
-
-    // 加载 PDF 文档
-    const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
-    const pdf = await loadingTask.promise;
-
-    // 提取文本内容
-    let textContent = `PDF 文档内容 (共 ${pdf.numPages} 页):\n\n`;
-    let hasContent = false;
-
-    // 遍历页面
-    for (let i = 1; i <= pdf.numPages; i++) {
-      try {
-        const page = await pdf.getPage(i);
-        const content = await page.getTextContent();
-        const pageText = content.items.map((item: any) => item.str).join(" ");
-
-        if (pageText.trim().length > 0) {
-          hasContent = true;
-          textContent += `--- 第 ${i} 页 ---\n${pageText}\n\n`;
-        } else {
-          textContent += `--- 第 ${i} 页 ---\n[空白或图像内容]\n\n`;
-        }
-      } catch (pageError) {
-        textContent += `--- 第 ${i} 页 ---\n[无法解析此页]\n\n`;
-      }
-    }
-
-    if (!hasContent) {
-      return `【PDF 内容提取受限】\n\n此 PDF 文件无法提取文本内容，可能是扫描版或受保护的 PDF。`;
-    }
-
-    return textContent;
-  } catch (pdfError: any) {
-    console.error("解析 PDF 失败:", pdfError);
-    return "【PDF 解析失败】无法提取 PDF 文件内容。请尝试使用 PDF 查看器打开文件，然后复制内容后直接粘贴。";
-  }
+  return Promise.resolve(
+    "【功能正在优化中】\n\nPDF 文件解析功能正在升级以提高性能和兼容性，暂时无法使用。请稍后重试，或尝试复制内容后直接粘贴。",
+  );
 }
 
 /**
@@ -244,25 +197,63 @@ async function readZipFile(arrayBuffer: ArrayBuffer): Promise<string> {
  */
 async function readExcelFile(arrayBuffer: ArrayBuffer): Promise<string> {
   try {
-    const XLSX = await import("xlsx");
-    const workbook = XLSX.read(new Uint8Array(arrayBuffer), { type: "array" });
-    let result = `Excel 表格内容:\n\n`;
-    const sheetNames = workbook.SheetNames;
+    const JSZip = (await import("jszip")).default;
+    const zip = new JSZip();
+    const zipContent = await zip.loadAsync(arrayBuffer);
 
-    sheetNames.forEach((sheetName) => {
-      result += `=== 工作表: ${sheetName} ===\n\n`;
-      const worksheet = workbook.Sheets[sheetName];
-      const jsonData: any[][] = XLSX.utils.sheet_to_json(worksheet, {
-        header: 1,
-      });
-      if (jsonData.length > 0) {
-        // 手动将JSON转换为CSV格式
-        const table = jsonData.map((row) => row.join(",")).join("\n");
-        result += table + "\n\n";
-      } else {
-        result += "[空工作表]\n\n";
+    // 1. 解析共享字符串
+    const sharedStringsXml = zipContent.file("xl/sharedStrings.xml");
+    let sharedStrings: string[] = [];
+    if (sharedStringsXml) {
+      const sharedStringsContent = await sharedStringsXml.async("string");
+      const textMatches = sharedStringsContent.match(/<t>([^<]*)<\/t>/g);
+      if (textMatches) {
+        sharedStrings = textMatches.map((match) =>
+          match.replace(/<t>|<\/t>/g, ""),
+        );
       }
-    });
+    }
+
+    let result = `Excel 表格内容:\n\n`;
+
+    // 2. 遍历工作表
+    const sheetRegex = /xl\/worksheets\/sheet(\d+)\.xml/;
+    for (const path in zipContent.files) {
+      if (sheetRegex.test(path)) {
+        const sheetXml = zipContent.file(path);
+        if (sheetXml) {
+          const sheetContent = await sheetXml.async("string");
+          const sheetName = `工作表 ${path.match(sheetRegex)![1]}`;
+          result += `=== ${sheetName} ===\n\n`;
+
+          // 3. 解析行和单元格
+          const rows = sheetContent.match(/<row.*?<\/row>/g);
+          if (rows) {
+            const table = rows
+              .map((row) => {
+                const cells = row.match(/<c.*?<\/c>/g);
+                if (!cells) return "";
+                return cells
+                  .map((cell) => {
+                    const valueMatch = cell.match(/<v>(.*?)<\/v>/);
+                    if (!valueMatch) return "";
+                    let value = valueMatch[1];
+                    // 如果是共享字符串，从表中查找
+                    if (cell.includes('t="s"')) {
+                      value = sharedStrings[parseInt(value)] ?? "";
+                    }
+                    return value;
+                  })
+                  .join(",");
+              })
+              .join("\n");
+            result += table + "\n\n";
+          } else {
+            result += "[空工作表]\n\n";
+          }
+        }
+      }
+    }
 
     return result;
   } catch (excelError: any) {

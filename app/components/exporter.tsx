@@ -19,15 +19,21 @@ import {
   useMobileScreen,
 } from "../utils";
 
-import CopyIcon from "../icons/copy.svg";
-import LoadingIcon from "../icons/three-dots.svg";
-import ShareIcon from "../icons/share.svg";
-import NeatIcon from "../icons/neat.svg";
+import CopyIcon from "../icons/copy.svg?react";
+import LoadingIcon from "../icons/three-dots.svg?react";
+import ShareIcon from "../icons/share.svg?react";
+import NeatIcon from "../icons/neat.svg?react";
 
-import DownloadIcon from "../icons/download.svg";
-import { useEffect, useMemo, useRef, useState } from "react";
+import DownloadIcon from "../icons/download.svg?react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  lazy,
+  Suspense,
+} from "react";
 import { MessageSelector, useMessageSelector } from "./message-selector";
-import dynamic from "next/dynamic";
 
 import { toBlob, toPng } from "html-to-image";
 
@@ -39,9 +45,9 @@ import { getMessageTextContent } from "../utils";
 import clsx from "clsx";
 import { MaskAvatar } from "./mask";
 
-const Markdown = dynamic(async () => (await import("./markdown")).Markdown, {
-  loading: () => <LoadingIcon />,
-});
+const Markdown = lazy(() =>
+  import("./markdown").then((module) => ({ default: module.Markdown })),
+);
 
 export function ExportMessageModal(props: { onClose: () => void }) {
   return (
@@ -292,7 +298,9 @@ export function RenderExport(props: {
           id={`${m.role}:${i}`}
           className={EXPORT_MESSAGE_CLASS_NAME}
         >
-          <Markdown content={getMessageTextContent(m)} defaultShow />
+          <Suspense fallback={<LoadingIcon />}>
+            <Markdown content={getMessageTextContent(m)} defaultShow />
+          </Suspense>
         </div>
       ))}
     </div>
@@ -558,12 +566,14 @@ export function ImagePreviewer(props: {
               </div>
 
               <div className={styles["body"]}>
-                <Markdown
-                  content={getMessageTextContent(m)}
-                  fontSize={config.fontSize}
-                  fontFamily={config.fontFamily}
-                  defaultShow
-                />
+                <Suspense fallback={<LoadingIcon />}>
+                  <Markdown
+                    content={getMessageTextContent(m)}
+                    fontSize={config.fontSize}
+                    fontFamily={config.fontFamily}
+                    defaultShow
+                  />
+                </Suspense>
                 {getMessageImages(m).length == 1 && (
                   <img
                     key={i}
@@ -672,7 +682,9 @@ export function JsonPreviewer(props: {
         messages={props.messages}
       />
       <div className="markdown-body" onClick={copy}>
-        <Markdown content={mdText} />
+        <Suspense fallback={<LoadingIcon />}>
+          <Markdown content={mdText} />
+        </Suspense>
       </div>
     </>
   );

@@ -1,16 +1,15 @@
 "use client";
 
-require("../polyfill");
+import "../polyfill";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import styles from "./home.module.scss";
 
-import NeatIcon from "../icons/neat.svg";
-import LoadingIcon from "../icons/three-dots.svg";
+import NeatIcon from "../icons/neat.svg?react";
+import LoadingIcon from "../icons/three-dots.svg?react";
 
 import { getCSSVar, useMobileScreen } from "../utils";
 
-import dynamic from "next/dynamic";
 import { Path, SlotID } from "../constant";
 import { ErrorBoundary } from "./error";
 
@@ -40,47 +39,36 @@ export function Loading(props: { noLogo?: boolean }) {
   );
 }
 
-const Artifacts = dynamic(async () => (await import("./artifacts")).Artifacts, {
-  loading: () => <Loading noLogo />,
-});
-
-const Settings = dynamic(async () => (await import("./settings")).Settings, {
-  loading: () => <Loading noLogo />,
-});
-
-const Chat = dynamic(async () => (await import("./chat")).Chat, {
-  loading: () => <Loading noLogo />,
-  ssr: false,
-});
-
-const NewChat = dynamic(async () => (await import("./new-chat")).NewChat, {
-  loading: () => <Loading noLogo />,
-});
-
-const MaskPage = dynamic(async () => (await import("./mask")).MaskPage, {
-  loading: () => <Loading noLogo />,
-});
-
-const PluginPage = dynamic(async () => (await import("./plugin")).PluginPage, {
-  loading: () => <Loading noLogo />,
-});
-
-const SearchChat = dynamic(
-  async () => (await import("./search-chat")).SearchChatPage,
-  {
-    loading: () => <Loading noLogo />,
-  },
+const Artifacts = lazy(() =>
+  import("./artifacts").then((m) => ({ default: m.Artifacts })),
 );
 
-const Sd = dynamic(async () => (await import("./sd")).Sd, {
-  loading: () => <Loading noLogo />,
-});
+const Settings = lazy(() =>
+  import("./settings").then((m) => ({ default: m.Settings })),
+);
 
-const McpMarketPage = dynamic(
-  async () => (await import("./mcp-market")).McpMarketPage,
-  {
-    loading: () => <Loading noLogo />,
-  },
+const Chat = lazy(() => import("./chat").then((m) => ({ default: m.Chat })));
+
+const NewChat = lazy(() =>
+  import("./new-chat").then((m) => ({ default: m.NewChat })),
+);
+
+const MaskPage = lazy(() =>
+  import("./mask").then((m) => ({ default: m.MaskPage })),
+);
+
+const PluginPage = lazy(() =>
+  import("./plugin").then((m) => ({ default: m.PluginPage })),
+);
+
+const SearchChat = lazy(() =>
+  import("./search-chat").then((m) => ({ default: m.SearchChatPage })),
+);
+
+const Sd = lazy(() => import("./sd").then((m) => ({ default: m.Sd })));
+
+const McpMarketPage = lazy(() =>
+  import("./mcp-market").then((m) => ({ default: m.McpMarketPage })),
 );
 
 export function useSwitchTheme() {
@@ -177,9 +165,11 @@ function Screen() {
 
   if (isArtifact) {
     return (
-      <Routes>
-        <Route path="/artifacts/:id" element={<Artifacts />} />
-      </Routes>
+      <Suspense fallback={<Loading noLogo />}>
+        <Routes>
+          <Route path="/artifacts/:id" element={<Artifacts />} />
+        </Routes>
+      </Suspense>
     );
   }
   const renderContent = () => {
@@ -194,16 +184,18 @@ function Screen() {
           })}
         />
         <WindowContent>
-          <Routes>
-            <Route path={Path.Home} element={<Chat />} />
-            <Route path={Path.NewChat} element={<NewChat />} />
-            <Route path={Path.Masks} element={<MaskPage />} />
-            <Route path={Path.Plugins} element={<PluginPage />} />
-            <Route path={Path.SearchChat} element={<SearchChat />} />
-            <Route path={Path.Chat} element={<Chat />} />
-            <Route path={Path.Settings} element={<Settings />} />
-            <Route path={Path.McpMarket} element={<McpMarketPage />} />
-          </Routes>
+          <Suspense fallback={<Loading noLogo />}>
+            <Routes>
+              <Route path={Path.Home} element={<Chat />} />
+              <Route path={Path.NewChat} element={<NewChat />} />
+              <Route path={Path.Masks} element={<MaskPage />} />
+              <Route path={Path.Plugins} element={<PluginPage />} />
+              <Route path={Path.SearchChat} element={<SearchChat />} />
+              <Route path={Path.Chat} element={<Chat />} />
+              <Route path={Path.Settings} element={<Settings />} />
+              <Route path={Path.McpMarket} element={<McpMarketPage />} />
+            </Routes>
+          </Suspense>
         </WindowContent>
       </>
     );

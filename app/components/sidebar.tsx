@@ -3,16 +3,16 @@ import React, { useEffect, useRef, useMemo, useState, Fragment } from "react";
 import styles from "./home.module.scss";
 
 import { IconButton } from "./button";
-import SettingsIcon from "../icons/settings.svg";
-import GithubIcon from "../icons/github.svg";
-import AddIcon from "../icons/add.svg";
-import DeleteIcon from "../icons/delete.svg";
-import MaskIcon from "../icons/mask.svg";
-import DragIcon from "../icons/drag.svg";
-import DiscoveryIcon from "../icons/discovery.svg";
-import NeatIcon from "../icons/neat.svg";
-import McpIcon from "../icons/mcp.svg";
-import LoadingIcon from "../icons/three-dots.svg";
+import SettingsIcon from "../icons/settings.svg?react";
+import GithubIcon from "../icons/github.svg?react";
+import AddIcon from "../icons/add.svg?react";
+import DeleteIcon from "../icons/delete.svg?react";
+import MaskIcon from "../icons/mask.svg?react";
+import DragIcon from "../icons/drag.svg?react";
+import DiscoveryIcon from "../icons/discovery.svg?react";
+import NeatIcon from "../icons/neat.svg?react";
+import McpIcon from "../icons/mcp.svg?react";
+import LoadingIcon from "../icons/three-dots.svg?react";
 
 import Locale from "../locales";
 
@@ -30,21 +30,17 @@ import {
 
 import { Link, useNavigate } from "react-router-dom";
 import { isIOS, useMobileScreen } from "../utils";
-import dynamic from "next/dynamic";
 import { showConfirm, SimpleSelector } from "./ui-lib";
 import clsx from "clsx";
 import { isMcpEnabled, initializeMcpSystem } from "../mcp/actions";
 import { getClientConfig } from "../config/client";
 
-const ChatList = dynamic(async () => (await import("./chat-list")).ChatList, {
-  loading: () => null,
-});
+const ChatList = React.lazy(() =>
+  import("./chat-list").then((m) => ({ default: m.ChatList })),
+);
 
-const McpMarketPage = dynamic(
-  async () => (await import("./mcp-market")).McpMarketPage,
-  {
-    loading: () => <Loading noLogo />,
-  },
+const McpMarketPage = React.lazy(() =>
+  import("./mcp-market").then((m) => ({ default: m.McpMarketPage })),
 );
 
 function Loading(props: { noLogo?: boolean }) {
@@ -346,7 +342,9 @@ export function SideBar(props: { className?: string }) {
           }
         }}
       >
-        <ChatList narrow={shouldNarrow} />
+        <React.Suspense fallback={<LoadingIcon />}>
+          <ChatList narrow={shouldNarrow} />
+        </React.Suspense>
       </SideBarBody>
       <SideBarTail
         primaryAction={

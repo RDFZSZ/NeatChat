@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="config" content="{}" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="icon" href="/neat.svg" type="image/svg+xml" />
+    <link
+      rel="manifest"
+      href="/site.webmanifest"
+      crossOrigin="use-credentials"
+    />
+    <title>NeatChat</title>
+    <script src="/serviceWorkerRegister.js" defer></script>
+    <style>
+      @font-face {
+        font-family: 'Noto Sans';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: local(-apple-system), local(BlinkMacSystemFont);
+      }
+
+      html {
+        text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/app/main.tsx"></script>
+  </body>
+</html>
