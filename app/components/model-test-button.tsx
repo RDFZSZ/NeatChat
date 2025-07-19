@@ -35,7 +35,7 @@ export function ModelTestButton(props: {
     if (props.onTimeoutChange) {
       props.onTimeoutChange(timeout);
     }
-  }, [timeout, props.onTimeoutChange]);
+  }, [timeout, props]);
 
   const handleTest = async () => {
     // 如果正在测试中，则停止测试

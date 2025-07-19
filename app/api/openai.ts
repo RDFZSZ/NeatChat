@@ -14,8 +14,11 @@ function getModels(remoteModelRes: OpenAIListModelResponse) {
   if (config.disableGPT4) {
     remoteModelRes.data = remoteModelRes.data.filter(
       (m) =>
-        !(m.id.startsWith("gpt-4") || m.id.startsWith("chatgpt-4o") || m.id.startsWith("o1")) ||
-        m.id.startsWith("gpt-4o-mini"),
+        !(
+          m.id.startsWith("gpt-4") ||
+          m.id.startsWith("chatgpt-4o") ||
+          m.id.startsWith("o1")
+        ) || m.id.startsWith("gpt-4o-mini"),
     );
   }
 
@@ -24,7 +27,7 @@ function getModels(remoteModelRes: OpenAIListModelResponse) {
 
 export async function handle(
   req: NextRequest,
-  { params }: { params: { path: string[] } },
+  { params }: { params: { provider: string; path: string[] } },
 ) {
   console.log("[OpenAI Route] params ", params);
 

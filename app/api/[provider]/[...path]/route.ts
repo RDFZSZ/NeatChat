@@ -14,45 +14,81 @@ import { handle as xaiHandler } from "../../xai";
 import { handle as chatglmHandler } from "../../glm";
 import { handle as proxyHandler } from "../../proxy";
 
-async function handle(
+export async function GET(
   req: NextRequest,
-  { params }: { params: { provider: string; path: string[] } },
+  context: { params: { provider: string; path: string[] } },
 ) {
+  const { params } = context;
   const apiPath = `/api/${params.provider}`;
   console.log(`[${params.provider} Route] params `, params);
   switch (apiPath) {
     case ApiPath.Azure:
-      return azureHandler(req, { params });
+      return azureHandler(req, context);
     case ApiPath.Google:
-      return googleHandler(req, { params });
+      return googleHandler(req, context);
     case ApiPath.Anthropic:
-      return anthropicHandler(req, { params });
+      return anthropicHandler(req, context);
     case ApiPath.Baidu:
-      return baiduHandler(req, { params });
+      return baiduHandler(req, context);
     case ApiPath.ByteDance:
-      return bytedanceHandler(req, { params });
+      return bytedanceHandler(req, context);
     case ApiPath.Alibaba:
-      return alibabaHandler(req, { params });
+      return alibabaHandler(req, context);
     // case ApiPath.Tencent: using "/api/tencent"
     case ApiPath.Moonshot:
-      return moonshotHandler(req, { params });
+      return moonshotHandler(req, context);
     case ApiPath.Stability:
-      return stabilityHandler(req, { params });
+      return stabilityHandler(req, context);
     case ApiPath.Iflytek:
-      return iflytekHandler(req, { params });
+      return iflytekHandler(req, context);
     case ApiPath.XAI:
-      return xaiHandler(req, { params });
+      return xaiHandler(req, context);
     case ApiPath.ChatGLM:
-      return chatglmHandler(req, { params });
+      return chatglmHandler(req, context);
     case ApiPath.OpenAI:
-      return openaiHandler(req, { params });
+      return openaiHandler(req, context);
     default:
-      return proxyHandler(req, { params });
+      return proxyHandler(req, context);
   }
 }
 
-export const GET = handle;
-export const POST = handle;
+export async function POST(
+  req: NextRequest,
+  context: { params: { provider: string; path: string[] } },
+) {
+  const { params } = context;
+  const apiPath = `/api/${params.provider}`;
+  console.log(`[${params.provider} Route] params `, params);
+  switch (apiPath) {
+    case ApiPath.Azure:
+      return azureHandler(req, context);
+    case ApiPath.Google:
+      return googleHandler(req, context);
+    case ApiPath.Anthropic:
+      return anthropicHandler(req, context);
+    case ApiPath.Baidu:
+      return baiduHandler(req, context);
+    case ApiPath.ByteDance:
+      return bytedanceHandler(req, context);
+    case ApiPath.Alibaba:
+      return alibabaHandler(req, context);
+    // case ApiPath.Tencent: using "/api/tencent"
+    case ApiPath.Moonshot:
+      return moonshotHandler(req, context);
+    case ApiPath.Stability:
+      return stabilityHandler(req, context);
+    case ApiPath.Iflytek:
+      return iflytekHandler(req, context);
+    case ApiPath.XAI:
+      return xaiHandler(req, context);
+    case ApiPath.ChatGLM:
+      return chatglmHandler(req, context);
+    case ApiPath.OpenAI:
+      return openaiHandler(req, context);
+    default:
+      return proxyHandler(req, context);
+  }
+}
 
 export const runtime = "edge";
 export const preferredRegion = [

@@ -21,10 +21,10 @@ import { useAppConfig } from "../store/config";
 import { FileAttachment } from "./file-attachment";
 import { encode } from "../utils/token";
 
-function Details(props: { children: React.ReactNode }) {
+function Details(props: { children?: React.ReactNode }) {
   return <details open>{props.children}</details>;
 }
-function Summary(props: { children: React.ReactNode }) {
+function Summary(props: { children?: React.ReactNode }) {
   return <summary>{props.children}</summary>;
 }
 
@@ -76,7 +76,7 @@ export function Mermaid(props: { code: string }) {
   );
 }
 
-export function PreCode(props: { children: any }) {
+export function PreCode(props: { children?: any }) {
   const ref = useRef<HTMLPreElement>(null);
   const previewRef = useRef<HTMLPreviewHander>(null);
   const [mermaidCode, setMermaidCode] = useState("");
@@ -133,7 +133,7 @@ export function PreCode(props: { children: any }) {
       });
       setTimeout(renderArtifacts, 1);
     }
-  }, []);
+  }, [renderArtifacts]);
 
   return (
     <>
@@ -165,7 +165,7 @@ export function PreCode(props: { children: any }) {
   );
 }
 
-function CustomCode(props: { children: any; className?: string }) {
+function CustomCode(props: { children?: any; className?: string }) {
   const chatStore = useChatStore();
   const session = chatStore.currentSession();
   const config = useAppConfig();
@@ -406,64 +406,56 @@ ${quotedContent}
   });
 }
 
-function _MarkDownContent(props: { content: string }) {
-  // 检测文件附件格式
-  const detectFileAttachments = (content: string) => {
-    const fileRegex =
-      /文件名: (.+?)\n类型: (.+?)\n大小: (.+?) KB\n\n([\s\S]+?)(?=\n\n---|$)/g;
-    let match;
-    const files = [];
+// 提取文件附件并将它们转换为链接
+function replaceFileAttachments(content: string): string {
+  const attachments = detectFileAttachments(content);
+  let newContent = content;
 
-    while ((match = fileRegex.exec(content)) !== null) {
-      files.push({
-        fileName: match[1],
-        fileType: match[2],
-        fileSize: parseFloat(match[3]) * 1024, // 转换为字节
-        content: match[4],
-      });
-    }
+  for (const attachment of attachments) {
+    // 为每个附件创建一个唯一的链接
+    const fileUrl = `file://${encodeURIComponent(
+      attachment.fileName,
+    )}?type=${encodeURIComponent(attachment.fileType)}&size=${
+      attachment.fileSize
+    }`;
 
-    return files;
-  };
+    // 创建一个Markdown链接来替换文件块
+    const link = `[${attachment.fileName}](${fileUrl})`;
 
-  // 替换文件内容为文件附件组件
-  const replaceFileAttachments = (content: string) => {
-    const files = detectFileAttachments(content);
+    // 替换原始文本中的文件块
+    newContent = newContent.replace(attachment.fullBlock, link);
+  }
 
-    if (files.length === 0) {
-      return content;
-    }
+  return newContent;
+}
 
-    let newContent = content;
+// 检测文本中是否存在文件附件
+function detectFileAttachments(text: string): {
+  fileName: string;
+  fileType: string;
+  fileSize: number;
+  fileContent: string;
+  fullBlock: string;
+}[] {
+  const regex =
+    /文件名: (.*?)\n类型: (.*?)\n大小: (.*?) KB\n\n([\s\S]*?)\n\n---\n\n/g;
+  const matches = [];
+  let match;
 
-    // 使用更友好的链接文本
-    files.forEach((file, index) => {
-      // 创建一个安全的替换模式
-      const fileMarker = `文件名: ${file.fileName}\n类型: ${
-        file.fileType
-      }\n大小: ${(file.fileSize / 1024).toFixed(2)} KB\n\n`;
-      const replacement = `[📄 ${file.fileName}](file://${encodeURIComponent(
-        file.fileName,
-      )}?type=${encodeURIComponent(file.fileType)}&size=${file.fileSize})`;
-      const startIndex = newContent.indexOf(fileMarker);
-
-      if (startIndex >= 0) {
-        // 找到文件内容的结束位置
-        const contentStart = startIndex + fileMarker.length;
-        let contentEnd = newContent.indexOf("\n\n---\n\n", contentStart);
-        if (contentEnd < 0) contentEnd = newContent.length;
-
-        // 使用特殊格式的 Markdown 链接，可以被 ReactMarkdown 正确处理
-        newContent =
-          newContent.substring(0, startIndex) +
-          replacement +
-          newContent.substring(contentEnd);
-      }
+  while ((match = regex.exec(text)) !== null) {
+    matches.push({
+      fileName: match[1],
+      fileType: match[2],
+      fileSize: parseFloat(match[3]) * 1024, // 转换为字节
+      fileContent: match[4],
+      fullBlock: match[0],
     });
+  }
 
-    return newContent;
-  };
+  return matches;
+}
 
+function MarkDownContentComponent(props: { content: string }) {
   const escapedContent = useMemo(() => {
     // 检查是否是 base64 图像数据
     try {
@@ -536,7 +528,7 @@ function _MarkDownContent(props: { content: string }) {
       ]}
       components={{
         // 添加自定义组件处理
-        a: (aProps) => {
+        a: (aProps: any) => {
           const href = aProps.href || "";
 
           // 检测并阻止javascript协议
@@ -619,14 +611,14 @@ function _MarkDownContent(props: { content: string }) {
 
           // 处理其他安全链接
           const isInternal = /^\/#/i.test(href);
-          const target = isInternal ? "_self" : aProps.target ?? "_blank";
+          const target = isInternal ? "_self" : (aProps.target ?? "_blank");
           const rel = !isInternal ? "noopener noreferrer" : undefined;
 
           return <a {...aProps} href={href} target={target} rel={rel} />;
         },
         pre: PreCode,
         code: CustomCode,
-        p: (pProps) => <p {...pProps} dir="auto" />,
+        p: (pProps: any) => <p {...pProps} dir="auto" />,
         details: Details,
         summary: Summary,
       }}
@@ -636,7 +628,7 @@ function _MarkDownContent(props: { content: string }) {
   );
 }
 
-export const MarkdownContent = React.memo(_MarkDownContent);
+export const MarkdownContent = React.memo(MarkDownContentComponent);
 
 export function Markdown(
   props: {
@@ -644,7 +636,7 @@ export function Markdown(
     loading?: boolean;
     fontSize?: number;
     fontFamily?: string;
-    parentRef?: RefObject<HTMLDivElement>;
+    parentRef?: RefObject<HTMLDivElement | null>;
     defaultShow?: boolean;
     isUser?: boolean;
     messageId?: string;

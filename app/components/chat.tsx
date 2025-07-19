@@ -1,12 +1,5 @@
 import { useDebouncedCallback } from "use-debounce";
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useMemo,
-  Fragment,
-  RefObject,
-} from "react";
+import React, { useState, useRef, useEffect, useMemo, Fragment } from "react";
 
 import SendWhiteIcon from "../icons/send-white.svg";
 import BrainIcon from "../icons/brain.svg";
@@ -76,6 +69,7 @@ import {
 import { uploadImage as uploadImageRemote } from "@/app/utils/chat";
 
 import dynamic from "next/dynamic";
+import Image from "next/image";
 
 import { ChatControllerPool } from "../client/controller";
 import { DalleSize, DalleQuality, DalleStyle } from "../typing";
@@ -382,7 +376,7 @@ function ClearContextDivider() {
 
 export function ChatAction(props: {
   text: string;
-  icon: JSX.Element;
+  icon: React.ReactNode;
   onClick: () => void;
 }) {
   const iconRef = useRef<HTMLDivElement>(null);
@@ -430,7 +424,7 @@ export function ChatAction(props: {
 }
 
 function useScrollToBottom(
-  scrollRef: RefObject<HTMLDivElement>,
+  scrollRef: { current: HTMLDivElement | null },
   detach: boolean = false,
 ) {
   // for auto-scroll
@@ -551,7 +545,7 @@ export function ChatActions(props: {
           : nextModel.name,
       );
     }
-  }, [chatStore, currentModel, models, session]);
+  }, [chatStore, currentModel, models, session, props]);
 
   const showModelSearchOption = config.enableModelSearch ?? false;
 
@@ -949,7 +943,7 @@ export function ShortcutKeyModal(props: { onClose: () => void }) {
   );
 }
 
-function _Chat() {
+function ChatPanel() {
   type RenderMessage = ChatMessage & { preview?: boolean };
 
   const chatStore = useChatStore();
@@ -960,17 +954,18 @@ function _Chat() {
 
   const [showExport, setShowExport] = useState(false);
 
-  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement | null>(null);
   const [userInput, setUserInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { submitKey, shouldSubmit } = useSubmitHandler();
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
   const isScrolledToBottom = scrollRef?.current
     ? Math.abs(
         scrollRef.current.scrollHeight -
           (scrollRef.current.scrollTop + scrollRef.current.clientHeight),
       ) <= 1
     : false;
+  const [hitBottom, setHitBottom] = useState(true);
   const isAttachWithTop = useMemo(() => {
     const lastMessage = scrollRef.current?.lastElementChild as HTMLElement;
     // if scrolllRef is not ready or no message, return false
@@ -980,7 +975,7 @@ function _Chat() {
       scrollRef.current.getBoundingClientRect().top;
     // leave some space for user question
     return topDistance < 100;
-  }, [scrollRef?.current?.scrollHeight]);
+  }, []);
 
   const isTyping = userInput !== "";
 
@@ -990,7 +985,6 @@ function _Chat() {
     scrollRef,
     (isScrolledToBottom || isAttachWithTop) && !isTyping,
   );
-  const [hitBottom, setHitBottom] = useState(true);
   const isMobileScreen = useMobileScreen();
   const navigate = useNavigate();
   const [attachImages, setAttachImages] = useState<string[]>([]);
@@ -2160,10 +2154,12 @@ function _Chat() {
                           messageId={message.id}
                         />
                         {getMessageImages(message).length == 1 && (
-                          <img
+                          <Image
                             className={styles["chat-message-item-image"]}
                             src={getMessageImages(message)[0]}
                             alt=""
+                            width={200}
+                            height={200}
                             onClick={() => {
                               setEditingImage(getMessageImages(message)[0]);
                               setEditingImageMessageId(message.id); // 保存图片所属的消息ID
@@ -2182,13 +2178,15 @@ function _Chat() {
                           >
                             {getMessageImages(message).map((image, index) => {
                               return (
-                                <img
+                                <Image
                                   className={
                                     styles["chat-message-item-image-multi"]
                                   }
                                   key={index}
                                   src={image}
                                   alt=""
+                                  width={100}
+                                  height={100}
                                   onClick={() => {
                                     setEditingImage(image);
                                     setEditingImageMessageId(message.id); // 保存图片所属的消息ID
@@ -2590,5 +2588,5 @@ function _Chat() {
 export function Chat() {
   const chatStore = useChatStore();
   const session = chatStore.currentSession();
-  return <_Chat key={session.id}></_Chat>;
+  return <ChatPanel key={session.id} />;
 }

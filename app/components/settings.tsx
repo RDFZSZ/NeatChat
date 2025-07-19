@@ -593,7 +593,7 @@ function useServerCustomModels() {
       .catch((err) => {
         console.error("Failed to fetch server custom models:", err);
       });
-  }, []);
+  }, [config]);
 
   return serverCustomModels;
 }
@@ -1443,8 +1443,8 @@ export function Settings() {
               checkingUpdate
                 ? Locale.Settings.Update.IsChecking
                 : hasNewVersion
-                ? Locale.Settings.Update.FoundUpdate(remoteId ?? "ERROR")
-                : Locale.Settings.Update.IsLatest
+                  ? Locale.Settings.Update.FoundUpdate(remoteId ?? "ERROR")
+                  : Locale.Settings.Update.IsLatest
             }
           >
             {checkingUpdate ? (
