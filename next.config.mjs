@@ -31,6 +31,7 @@ const nextConfig = {
       fs: false,
       path: false,
       child_process: false,
+      stream: false,
     };
 
     return config;
