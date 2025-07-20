@@ -1,7 +1,5 @@
+export const runtime = "edge";
 import { type NextRequest, NextResponse } from "next/server";
-
-// 保持 mammoth 的导入方式
-import mammoth from "mammoth";
 
 // 辅助函数：将 Base64 字符串转换为 ArrayBuffer
 function base64ToArrayBuffer(base64: string): ArrayBuffer {
@@ -21,9 +19,27 @@ function base64ToArrayBuffer(base64: string): ArrayBuffer {
  */
 async function readWordFile(arrayBuffer: ArrayBuffer): Promise<string> {
   try {
-    // 使用 mammoth 将 .docx 文档转换为文本
-    const result = await mammoth.extractRawText({ arrayBuffer });
-    return result.value; // 返回纯文本内容
+    // 使用 JSZip 解压 .docx 文件
+    const JSZip = (await import("jszip")).default;
+    const zip = new JSZip();
+    const zipContent = await zip.loadAsync(arrayBuffer);
+    const docXml = zipContent.file("word/document.xml");
+
+    if (!docXml) {
+      throw new Error("在 .docx 文件中未找到 document.xml。");
+    }
+
+    const content = await docXml.async("string");
+
+    // 从 XML 中提取文本
+    const textMatches = content.match(/<w:t>([^<]*)<\/w:t>/g);
+    if (textMatches) {
+      return textMatches
+        .map((match) => match.replace(/<w:t>|<\/w:t>/g, ""))
+        .join("");
+    }
+
+    return "无法从 Word 文件中提取文本内容。";
   } catch (error: any) {
     // 如果是 ZIP 相关错误，提供更友好的错误消息
     if (error.message && error.message.includes("zip file")) {

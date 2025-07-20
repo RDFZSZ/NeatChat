@@ -40,7 +40,6 @@
     "js-tiktoken": "^1.0.20",
     "jszip": "^3.10.1",
     "lodash-es": "^4.17.21",
-    "mammoth": "^1.9.1",
     "markdown-to-txt": "^2.0.1",
     "mermaid": "^11.9.0",
     "nanoid": "^5.1.5",
