@@ -20,7 +20,7 @@
     "test:ci": "jest --ci",
     "vercel:build": "vercel build",
     "vercel:build:win": "cross-env VERCEL_DEVEL_NO_SYMLINKS=1 vercel build",
-    "pages:build": "cross-env VERCEL_DEVEL_NO_SYMLINKS=1 npx vercel build && npx next-on-pages --skip-build"
+    "pages:build": "yarn build && npx next-on-pages"
   },
   "dependencies": {
     "@fortaine/fetch-event-source": "^3.0.6",
