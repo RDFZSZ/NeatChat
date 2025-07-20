@@ -1,56 +1,84 @@
 export const runtime = "edge";
 import { NextRequest, NextResponse } from "next/server";
-import {
-  addMcpServer,
-  executeMcpAction,
-  getAllTools,
-  getAvailableClientsCount,
-  getClientTools,
-  getClientsStatus,
-  getMcpConfig,
-  initializeMcpSystem,
-  isMcpEnabled,
-  pauseMcpServer,
-  removeMcpServer,
-  restartAllClients,
-  resumeMcpServer,
-} from "@/app/mcp/backend-actions";
-
 async function handlePostRequest(req: NextRequest) {
   try {
     const { action, payload } = await req.json();
 
     switch (action) {
-      case "isMcpEnabled":
+      case "isMcpEnabled": {
+        const { isMcpEnabled } = await import("@/app/mcp/actions/isMcpEnabled");
         return NextResponse.json(await isMcpEnabled());
-      case "initializeMcpSystem":
+      }
+      case "initializeMcpSystem": {
+        const { initializeMcpSystem } = await import(
+          "@/app/mcp/actions/initializeMcpSystem"
+        );
         return NextResponse.json(await initializeMcpSystem());
-      case "getClientsStatus":
+      }
+      case "getClientsStatus": {
+        const { getClientsStatus } = await import(
+          "@/app/mcp/actions/getClientsStatus"
+        );
         return NextResponse.json(await getClientsStatus());
-      case "getClientTools":
+      }
+      case "getClientTools": {
+        const { getClientTools } = await import(
+          "@/app/mcp/actions/getClientTools"
+        );
         return NextResponse.json(await getClientTools(payload.clientId));
-      case "getAvailableClientsCount":
+      }
+      case "getAvailableClientsCount": {
+        const { getAvailableClientsCount } = await import(
+          "@/app/mcp/actions/getAvailableClientsCount"
+        );
         return NextResponse.json(await getAvailableClientsCount());
-      case "getAllTools":
+      }
+      case "getAllTools": {
+        const { getAllTools } = await import("@/app/mcp/actions/getAllTools");
         return NextResponse.json(await getAllTools());
-      case "addMcpServer":
+      }
+      case "addMcpServer": {
+        const { addMcpServer } = await import("@/app/mcp/actions/addMcpServer");
         return NextResponse.json(
           await addMcpServer(payload.clientId, payload.config),
         );
-      case "pauseMcpServer":
+      }
+      case "pauseMcpServer": {
+        const { pauseMcpServer } = await import(
+          "@/app/mcp/actions/pauseMcpServer"
+        );
         return NextResponse.json(await pauseMcpServer(payload.clientId));
-      case "resumeMcpServer":
+      }
+      case "resumeMcpServer": {
+        const { resumeMcpServer } = await import(
+          "@/app/mcp/actions/resumeMcpServer"
+        );
         return NextResponse.json(await resumeMcpServer(payload.clientId));
-      case "removeMcpServer":
+      }
+      case "removeMcpServer": {
+        const { removeMcpServer } = await import(
+          "@/app/mcp/actions/removeMcpServer"
+        );
         return NextResponse.json(await removeMcpServer(payload.clientId));
-      case "restartAllClients":
+      }
+      case "restartAllClients": {
+        const { restartAllClients } = await import(
+          "@/app/mcp/actions/restartAllClients"
+        );
         return NextResponse.json(await restartAllClients());
-      case "executeMcpAction":
+      }
+      case "executeMcpAction": {
+        const { executeMcpAction } = await import(
+          "@/app/mcp/actions/executeMcpAction"
+        );
         return NextResponse.json(
           await executeMcpAction(payload.clientId, payload.request),
         );
-      case "getMcpConfig":
+      }
+      case "getMcpConfig": {
+        const { getMcpConfig } = await import("@/app/mcp/actions/getMcpConfig");
         return NextResponse.json(await getMcpConfig());
+      }
       default:
         return NextResponse.json({ error: "Invalid action" }, { status: 400 });
     }
